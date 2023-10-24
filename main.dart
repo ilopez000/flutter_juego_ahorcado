@@ -55,11 +55,53 @@ class _AhorcadoHomePageState extends State<AhorcadoHomePage> {
       });
     }
 
-    if (palabraActual == palabraSeleccionada || fallos == 6) {
-      Future.delayed(Duration(seconds: 2), () {
-        iniciarJuego();
-      });
+    if (palabraActual == palabraSeleccionada) {
+      mostrarDialogoGanador();
+    } else if (fallos == 6) {
+      mostrarDialogoGameOver();
     }
+  }
+
+  void mostrarDialogoGanador() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('¡Ganaste!'),
+          content: Text('¡Felicidades! Adivinaste la palabra.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Nueva partida'),
+              onPressed: () {
+                iniciarJuego();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void mostrarDialogoGameOver() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Game Over'),
+          content: Text('No adivinaste la palabra. La palabra era: $palabraSeleccionada.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Nueva partida'),
+              onPressed: () {
+                iniciarJuego();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   String actualizarPalabraActual(String palabra, List<String> adivinadas) {
@@ -103,3 +145,4 @@ class _AhorcadoHomePageState extends State<AhorcadoHomePage> {
     );
   }
 }
+
