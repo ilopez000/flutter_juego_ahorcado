@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-void main() => runApp(AhorcadoApp());
+void main() {
+  runApp(AhorcadoApp());
+}
 
 class AhorcadoApp extends StatelessWidget {
   @override
@@ -57,7 +59,7 @@ class _AhorcadoHomePageState extends State<AhorcadoHomePage> {
 
     if (palabraActual == palabraSeleccionada) {
       mostrarDialogoGanador();
-    } else if (fallos == 6) {
+    } else if (fallos >= 6) {
       mostrarDialogoGameOver();
     }
   }
@@ -116,6 +118,7 @@ class _AhorcadoHomePageState extends State<AhorcadoHomePage> {
     return nuevaPalabra;
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,17 +130,26 @@ class _AhorcadoHomePageState extends State<AhorcadoHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text('Fallos: $fallos / 6'),
-            Text(palabraActual, style: TextStyle(fontSize: 24)),
-            Wrap(
-              children: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').map((e) {
-                return Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: ElevatedButton(
-                    child: Text(e),
-                    onPressed: letrasAdivinadas.contains(e) ? null : () => adivinarLetra(e),
-                  ),
-                );
-              }).toList(),
+            Text(palabraActual, style: TextStyle(fontSize: 44)),
+            SizedBox(height: 20), // Agrega un poco de espacio
+            Expanded(
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  childAspectRatio: 2, // Ajusta la proporción según sea necesario
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                ),
+                itemCount: 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'.length,
+                itemBuilder: (BuildContext context, int index) {
+                  String letra = 'ABCDEFGHIJKLMNÑOPQRSTUVWXYZ'[index];
+                  return ElevatedButton(
+                    child: Text(letra, style: TextStyle(fontSize: 18)),
+                    onPressed: letrasAdivinadas.contains(letra) ? null : () => adivinarLetra(letra),
+
+                  );
+                },
+              ),
             ),
           ],
         ),
